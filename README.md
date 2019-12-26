@@ -1,2 +1,3 @@
-# etf_web_scrape
-Repository to scrape ETF related data from European ETF issuers. Due to transparent nature of European ETF market - data is required to be made available publicly
+# European ETF Data - Web Scrape
+***
+This repository contains python web scraping scripts that allow the easy extraction of data on European domiciled ETFs from the top ETF issuers

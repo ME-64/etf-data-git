@@ -138,7 +138,7 @@ class Etf_scrape:
        
         # Data cleansing step
         df = df.merge(self.mappings, left_on = 'DATAPOINT', right_on = 'alias', how='left')
-        df = df.loc[:, ['ISIN', 'Datapoint', 'VALUE', 'SOURCE', 'SOURCE_DATE']]
+        df = df.loc[:, ['ISIN', 'Datapoint', 'VALUE']]
         df.rename(columns = {'Datapoint':'DATAPOINT'}, inplace=True)
         df = df.drop_duplicates()
         df = df.pivot(index = 'ISIN', columns = 'DATAPOINT',values = 'VALUE')

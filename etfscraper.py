@@ -49,15 +49,10 @@ class Etf_scrape:
         # add cookies to the session
         for cooki in self.cookies:
             self.driver.add_cookie(cooki)
-            
-        # Current list of all identified issuer websites
-        with open('issuer_websites.txt', 'r') as wb:
-            self.websites = wb.read()
         
         # importing the mappings for each website
         self.mappings = pd.read_excel('data/datapoint_mapping.xlsx')    
 
-            
             
     def pBDP(self, isin=None, datapoint=None,FX=None):
         '''
@@ -140,9 +135,7 @@ class Etf_scrape:
                 
                 
         df.drop(df.index[0], inplace=True)
-        df['SOURCE'] = website
-        df['SOURCE_DATE'] = datetime.date.today()
-        
+       
         # Data cleansing step
         df = df.merge(self.mappings, left_on = 'DATAPOINT', right_on = 'alias', how='left')
         df = df.loc[:, ['ISIN', 'Datapoint', 'VALUE', 'SOURCE', 'SOURCE_DATE']]
@@ -164,16 +157,59 @@ class Etf_scrape:
         if 'shareclass_shares_outstanding_asof' in df.columns: df['shareclass_shares_outstanding_asof'] = df['shareclass_shares_outstanding_asof'].str.replace('As of ', '').astype('datetime64')
         if 'shareclass_shares_outstanding' in df.columns: df['shareclass_shares_outstanding'] = df['shareclass_shares_outstanding'].str.replace(',','').astype('float64')
         if 'shareclass_total_expense_ratio' in df.columns: df['shareclass_total_expense_ratio'] = df['shareclass_total_expense_ratio'].str.replace('%','').astype('float64') * 100     
-        if 'yield_to_maturity' in df.columns: df['yield_to_maturity'] = df['yield_to_maturity'].str.replace('%','').astype('float64')      
+        if 'yield_to_maturity' in df.columns: df['yield_to_maturity'] = df['yield_to_maturity'].str.replace('%','').astype('float64')
+        if 'yield_to_maturity_asof' in df.columns: df['yield_to_maturity_asof']  = df['yield_to_maturity_asof'].str.replace('As of ', '').astype('datetime64')
         if old_name.lower() == 'all': df['shareclass_assets_base'] = df['shareclass_shares_outstanding'] * df['shareclass_nav']
         df.dropna(axis = 1, how = 'all', inplace=True)
+        df['SOURCE'] = website
+        df['SOURCE_DATE'] = datetime.date.today()
         return(df)
+
+    
+    
+    def jpmPORT(self, isins=None):
+        #ie00bf4g6y48
+        # enable vectorisation
+        if isinstance(isins,str):
+            isins = [isins]
+            
+        isins = [x.lower() for x in isins]
+        
+        # component parts of URL for isin to be inserted into
+        start_url = 'https://am.jpmorgan.com/FundsMarketingHandler/excel?type=dailyETFHoldings&cusip='
+        end_url = '&country=gb&role=adv&locale=en-GB'
+        
+        df = pd.DataFrame(columns = ['Name', 'ISIN', 'Asset class', 'Country', 'Currency', 'Weight', 'Base market\nvalue', 'Price'])
+        
+        # loop through and download holdings for each ISIN
+        for isin in isins:
+            path = start_url + isin + end_url
+            temp_df = pd.read_excel(path, skipfooter=9)
+            asofdate = temp_df.iloc[4, 7]
+            headers = temp_df.iloc[6,]
+            temp_df = temp_df.iloc[7:,]
+            temp_df.columns = headers
+            temp_df.reset_index(drop=True)
+            df = df.append(temp_df, ignore_index=True, sort=False)
+            df['asof'] = asofdate.replace('As of Date:', '')
+            df['asof'] = df['asof'].astype('datetime64')
+            df['etf_isin'] = isin
+        return df
+            
+        
+    
+    
+    
+    
 
 ## testing
 if __name__ == '__main__':
-    etf = Etf_scrape(debug=False)
+    etf = Etf_scrape(debug=True)
     #df = etf.jpmBDP(isins= ['IE00BD9MMF62','IE00BJK9H753'], datapoints= ['fund_aum', 'yield_to_maturity', 'isin'])
-    df = etf.jpmBDP(isins= ['IE00BD9MMF62','IE00BJK9H753'], datapoints= 'all')
+    #df = etf.jpmBDP(isins= ['IE00BD9MMF62','IE00BJK9H753'], datapoints= 'all')
+    #print(df.shape)
+    
+    df = etf.jpmPORT(isins='IE00BD9MMF62')
     print(df.shape)
     
     

@@ -1,19 +1,25 @@
 # European ETF Data - Web Scrape
 ***
-This repository contains python web scraping scripts that allow the easy extraction of data on European domiciled ETFs from the top ETF issuers
+
+Due to the regulatory requirement that Exchange Traded Funds (ETFs) must adhere too - the majority of financial data related to ETFs is publically available on each issuers respective websites, updated frequently.
+
+This means that rather than rely on expensive and legacy data feeds from data vendors, one can go freely obtain this information from the internet.
+
+This is the repository for the 'etfscraper' object that allows users to fetch this information from websites programatically.
+
+Currently only 1 issuer website implemented, and not all desired datapoints either.
 
 
+### Sample usage:
+```
+import pandas as pd
 
-#### TODO
+#Initiate the object
+etf = Etf_scrape(debug=False)
 
-1. Implement better way to initialise cookies
-1. Implement the 'smart' waiting for pages to load
-1. Standardise the required 'datapoint' name for each issuer website
-1. Define each driver object for each site seperately (?)
-1. Methods to get a) holdings b) historical data c) list of ISINs
-1. When attr. is not found in the mapping file -> make this error better
-1. Scrape with ticker not ISINs (?)
-1. Sort out the "source" and "source date"
-1. Learn about `assert`, `pivot`
-1. get historical FX rates and implement for bdh/bdp(?)
-1. make the load of selenium driver less eager...
+#method to return a current datapoint for a given list of isins
+df = etf.jpmBDP(isins = 'IE00BJK9H860', datapoints = 'fund_aum')
+#>returns fund aum in dataframe
+```
+
+

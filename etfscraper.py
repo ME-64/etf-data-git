@@ -1,12 +1,17 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
 import time
 import pandas as pd
 import numpy as np
 import json
 import datetime
 import sys
+
 
 class Etf_scrape:
     """
@@ -112,9 +117,12 @@ class Etf_scrape:
         df = pd.DataFrame(columns = ['ISIN', 'DATAPOINT', 'VALUE'])
         df.loc[0] = None
         
+        # wait maximum 15 seconds to locate an element
+        #self.driver.implicitly_wait(5)
+        
         # fetching the JPM website
         self.driver.get(website)
-        time.sleep(2)
+        
         
         # loop through all requested ISINs for all requested datapoints
         for isin in isins:
@@ -122,8 +130,8 @@ class Etf_scrape:
             search.send_keys(isin)
             time.sleep(1)
             search.send_keys(Keys.RETURN)
-            time.sleep(3)
-
+            time.sleep(2)
+            
             for datapoint in datapoints:
                 try:
                     dp = self.driver.find_element_by_css_selector('[data-testid=' + datapoint + ']')

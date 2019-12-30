@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
+from bs4 import BeautifulSoup
 import time
 import pandas as pd
 import numpy as np
@@ -111,7 +112,7 @@ class Etf_scrape:
             print('WARNING: one or more datapoints not mapped to "data-test-id" on specified site')        
         
         # a list of all possible columns for lopping later
-        column_list = self.mappings['Datapoint'].unique().tolist()
+        #column_list = self.mappings['Datapoint'].unique().tolist()
         
         # creating the blank dataframe
         df = pd.DataFrame(columns = ['ISIN', 'DATAPOINT', 'VALUE'])
@@ -124,6 +125,9 @@ class Etf_scrape:
         self.driver.get(website)
         
         
+        
+        wait = WebDriverWait(self.driver, 2)
+
         # loop through all requested ISINs for all requested datapoints
         for isin in isins:
             search = self.driver.find_element_by_id('searchbox')
@@ -131,11 +135,23 @@ class Etf_scrape:
             time.sleep(1)
             search.send_keys(Keys.RETURN)
             time.sleep(2)
+            tries = 0
+            loaded = []
+            while (len(loaded) < 1) & (tries <= 20):
+                try:
+                    loaded = driver.find_elements_by_id(id_ = 'searchbox')
+                    time.sleep(0.5)
+                    tries = tries + 1
+                except:
+                    tries = tries + 1
+            
             
             for datapoint in datapoints:
                 try:
                     dp = self.driver.find_element_by_css_selector('[data-testid=' + datapoint + ']')
-                    dp = dp.get_attribute('innerHTML').replace('<span>', '').replace('</span>', '')
+                    dp = dp.get_attribute('innerHTML')
+                    soup = BeautifulSoup(dp, features='lxml')
+                    dp = soup.get_text()
                     df.loc[max(df.index) + 1] = [isin, datapoint, dp]
                 except:
                     # add a not found row if not found

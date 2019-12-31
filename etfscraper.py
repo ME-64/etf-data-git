@@ -12,6 +12,8 @@ import numpy as np
 import json
 import datetime
 import sys
+import os
+import re
 
 
 class Etf_scrape:
@@ -34,6 +36,14 @@ class Etf_scrape:
         if self.debug == False:
             chrome_options.add_argument('--headless')    # When debugging is off - no GUI needed
         else: print('Debugging Mode ON')        
+       
+        # setting download preferences
+        prefs = {'download.prompt_for_download': False,
+         'download.directory_upgrade': True,
+         'safebrowsing.enabled': False,
+         'safebrowsing.disable_download_protection': True,
+        'download.default_directory': os.getcwd() + '\data\\'}
+        chrome_options.add_experimental_option('prefs', prefs)
         
         
         # Selecting driver based on OS
@@ -147,15 +157,19 @@ class Etf_scrape:
             
             
             for datapoint in datapoints:
-                try:
-                    dp = self.driver.find_element_by_css_selector('[data-testid=' + datapoint + ']')
-                    dp = dp.get_attribute('innerHTML')
-                    soup = BeautifulSoup(dp, features='lxml')
-                    dp = soup.get_text()
+                if datapoint == 'title':
+                    dp = self.driver.title.replace(' - J.P. Morgan Asset Management', '')
                     df.loc[max(df.index) + 1] = [isin, datapoint, dp]
-                except:
-                    # add a not found row if not found
-                    df.loc[max(df.index) + 1] = [isin, datapoint, 'not found']
+                else:
+                    try:
+                        dp = self.driver.find_element_by_css_selector('[data-testid=' + datapoint + ']')
+                        dp = dp.get_attribute('innerHTML')
+                        soup = BeautifulSoup(dp, features='lxml')
+                        dp = soup.get_text()
+                        df.loc[max(df.index) + 1] = [isin, datapoint, dp]
+                    except:
+                        # add a not found row if not found
+                        df.loc[max(df.index) + 1] = [isin, datapoint, 'not found']
                 
                 
         df.drop(df.index[0], inplace=True)
@@ -219,7 +233,50 @@ class Etf_scrape:
             df['asof'] = df['asof'].astype('datetime64')
             df['etf_isin'] = isin
         return df
+    
+    
+    def get_jpmISIN(self):
+        """
+        method to update the list of currently available isins for JPMETFs
+        """
+        path1 = os.path.join('data','Export.xls')
+        if 'Export.xls' in os.listdir('data'):
+            os.remove(path1)
+        
+        path2 = os.path.join('data','Export.xlm')
+        if 'Export.xlm' in os.listdir('data'):
+            os.remove(path2)            
             
+            
+        self.driver.get('http://www.jpmorganassetmanagement.ie/en/showpage.aspx?pageID=18')
+        self.driver.find_element_by_css_selector('[value="Export to Excel"]').click()
+        self.driver.find_element_by_css_selector('[value="Download"]').click()
+
+        time.sleep(10)
+        
+        # convert the file to xlm from xls
+        os.rename(path1, path2)
+        
+        with open(path2) as fp:
+            t = fp.read()
+        
+        isins = re.findall(r'[A-Z]{2}[A-Z0-9]{9}[0-9]{1}',t)
+        
+        jpm_isins = pd.Series(isins)
+        
+        # waiting for download to complete
+        #jpm_isins = pd.DataFrame()
+        #TODO: TIME AWARE
+        #for _ in range(20):
+        #    if jpm_isins.size == 0:
+        #        try:
+        #            jpm_isins = pd.read_excel(path)
+        #        except:
+        #            pass
+        #        time.sleep(0.5)
+        #    else:
+        #        break
+        return jpm_isins
         
     
     

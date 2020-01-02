@@ -14,6 +14,7 @@ import datetime
 import sys
 import os
 import re
+import fx_api # function to get fx rates
 
 
 class Etf_scrape:
@@ -95,18 +96,26 @@ class Etf_scrape:
         pass
 
 
-    def jpmBDP(self, isins=None, datapoints=None):
+    def jpmBDP(self, isins=None, datapoints=None, fx=None):
         '''
         method returning a single datapoint on a single jpm isin
         Being built out at present to explore exactly how this class should be structured
         '''
         # defining the scraping website
         website = 'https://am.jpmorgan.com/'
+        
+        today = datetime.date.today().strftime('%Y-%m-%d')
         # convert single queries to lists so works w/ vectorisation
         if isinstance(isins,str):
             isins = [isins]
         if isinstance(datapoints,str):
             datapoints = [datapoints]
+            
+        if fx:
+            fx_enable = True
+        else:
+            fx_enable = False
+        
 
         old_len = len(datapoints)
         old_name = datapoints[0].lower()
@@ -158,7 +167,7 @@ class Etf_scrape:
 
             for datapoint in datapoints:
                 if datapoint == 'title':
-                    dp = self.driver.title.replace(' - J.P. Morgan Asset Management', '')
+                    dp = self.driver.title.replace(' - J.P. Morgan Asset Management', '').replace('– ETF', '')
                     df.loc[max(df.index) + 1] = [isin, datapoint, dp]
 
                 elif datapoint == 'shareclass_dist_status':
@@ -207,6 +216,52 @@ class Etf_scrape:
         if 'yield_to_maturity_asof' in df.columns: df['yield_to_maturity_asof']  = df['yield_to_maturity_asof'].str.replace('As of ', '').astype('datetime64')
         if old_name.lower() == 'all': df['shareclass_assets_base'] = df['shareclass_shares_outstanding'] * df['shareclass_nav']
         df.dropna(axis = 1, how = 'all', inplace=True)
+        
+        if (fx_enable == True) & (('fund_aum' in df.columns) == True):
+            
+            cur = df['fund_aum_currency'].dropna().unique()
+            cur = pd.Series(cur)
+            cur = cur.to_list()
+            
+            date = df['fund_aum_asof'].dropna().unique()
+            date = pd.Series(date)
+            date.drop_duplicates(inplace=True)
+            date = date.astype(np.datetime64)
+            date = np.datetime_as_string(date, unit = 'D')
+            
+            fx_table = fx_api.get_fx(cur, date, base = fx)
+            
+            o_in = df.index
+            df = df.merge(fx_table, how = 'left', left_on = ['fund_aum_currency', 'fund_aum_asof'], right_on = ['currency', 'date'])
+            df.index = o_in
+            
+            df['fund_aum_' + fx.lower()] = df['fund_aum'] * df['rate']
+            df = df.drop(columns = ['currency', 'rate', 'date'])
+        
+ 
+        if (fx_enable == True) & (('shareclass_nav' in df.columns) == True):
+            
+            cur = df['shareclass_nav_currency'].dropna().unique()
+            cur = pd.Series(cur)
+            cur = cur.to_list()
+            
+            date = df['shareclass_nav_asof'].dropna().unique()
+            date = pd.Series(date)
+            date.drop_duplicates(inplace=True)
+            date = date.astype(np.datetime64)
+            date = np.datetime_as_string(date, unit = 'D')
+            
+            fx_table = fx_api.get_fx(cur, date, base = fx)
+            
+            o_in = df.index
+            df = df.merge(fx_table, how = 'left', left_on = ['shareclass_nav_currency', 'shareclass_nav_asof'], right_on = ['currency', 'date'])
+            df.index = o_in
+            
+            df['shareclass_nav_' + fx.lower()] = df['shareclass_nav'] * df['rate']
+            df = df.drop(columns = ['currency', 'rate', 'date'])
+        
+        
+        
         df['SOURCE'] = website
         df['SOURCE_DATE'] = datetime.date.today()
         return(df)

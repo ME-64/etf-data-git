@@ -160,6 +160,13 @@ class Etf_scrape:
                 if datapoint == 'title':
                     dp = self.driver.title.replace(' - J.P. Morgan Asset Management', '')
                     df.loc[max(df.index) + 1] = [isin, datapoint, dp]
+
+                elif datapoint == 'shareclass_dist_status':
+                    dp = self.driver.title
+                    dp = re.findall('(acc|dist)', dp)
+                    dp = dp[0]
+                    df.loc[max(df.index) + 1] = [isin, datapoint, dp]
+
                 else:
                     try:
                         dp = self.driver.find_element_by_css_selector('[data-testid=' + datapoint + ']')
@@ -282,14 +289,12 @@ class Etf_scrape:
 
 
 
-
-
 ## testing
 if __name__ == '__main__':
-    etf = Etf_scrape(debug=True)
+    etf = Etf_scrape(debug=False)
     #df = etf.jpmBDP(isins= ['IE00BD9MMF62','IE00BJK9H753'], datapoints= ['fund_aum', 'yield_to_maturity', 'isin'])
     #df = etf.jpmBDP(isins= ['IE00BD9MMF62','IE00BJK9H753'], datapoints= 'all')
     #print(df.shape)
 
-    df = etf.jpmPORT(isins='IE00BD9MMF62')
-    print(df.shape)
+    df = etf.jpmBDP(isins='IE00BD9MMF62', datapoints = 'shareclass_dist_status')
+    print(df)

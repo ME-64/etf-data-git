@@ -115,15 +115,26 @@ class Etf_scrape:
             fx_enable = True
         else:
             fx_enable = False
+            
+        # convert all to lowercase
+        datapoints = [x.lower() for x in datapoints]
+        isins = [x.lower() for x in isins]
         
 
         old_len = len(datapoints)
-        old_name = datapoints[0].lower()
+        old_name = datapoints[0]
         # fetching all variables if asked for
-        if datapoints[0].lower() == 'all':
+        if datapoints[0] == 'all':
             datapoints = self.mappings.loc[self.mappings['website'] == website,'alias']
         else:
             datapoints = self.mappings.loc[(self.mappings['Datapoint'].isin(datapoints)) & (self.mappings['website'] == website), 'alias']
+            
+        if ('fund_aum' in datapoints) & ('fund_aum_asof' not in datapoints):
+            datapoints.append('fund_aum_asof')
+            
+        if ('shareclass_nav' in datapoints) & ('shareclass_nav_asof' not in datapoints):
+            datapoints.append('shareclass_nav_asof')
+        
 
         # Warning if a datapoint mapping wasn't found
         # TODO: currently doesn't work

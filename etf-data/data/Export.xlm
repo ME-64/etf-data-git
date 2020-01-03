@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="utf-16"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:html="http://www.w3.org/TR/REC-html40" xmlns="urn:schemas-microsoft-com:office:spreadsheet">
+    <o:DocumentProperties>
+        <Author>JPMorgan</Author>
+        <LastAuthor>JPMorgan</LastAuthor>
+        <Created>2020-01-02 23:42:04ZZ</Created>
+        <Company>JPMorgan</Company>
+        <Version>11.8122</Version>
+    </o:DocumentProperties>
+    <x:ExcelWorkbook>
+        <WindowHeight>13170</WindowHeight>
+        <WindowWidth>17580</WindowWidth>
+        <WindowTopX>120</WindowTopX>
+        <WindowTopY>60</WindowTopY>
+        <ProtectStructure>False</ProtectStructure>
+        <ProtectWindows>False</ProtectWindows>
+    </x:ExcelWorkbook>
+    <Styles>
+        <Style ss:ID="Default" ss:Name="Normal">
+            <Alignment ss:Vertical="Bottom" />
+            <Borders />
+            <Font />
+            <Interior />
+            <NumberFormat />
+            <Protection />
+        </Style>
+        <Style ss:ID="s1" ss:Name="Header">
+            <Alignment ss:Vertical="Bottom" ss:Horizontal="Center" />
+            <Borders />
+            <Font />
+            <Interior />
+            <NumberFormat />
+            <Protection />
+        </Style>
+        <Style ss:ID="disclaimer">
+            <Font ss:Color="#FF0000" />
+        </Style>
+        <Style ss:ID="percent">
+            <NumberFormat ss:Format="Percent" />
+        </Style>
+    </Styles>
+    <Worksheet ss:Name="FundExplorer Export" ss:Protected="1">
+        <Table ss:ExpandedColumnCount="6" ss:ExpandedRowCount="36" x:FullColumns="1" x:FullRows="1">
+            <ss:Column ss:Width="70" />
+            <ss:Column ss:Width="70" />
+            <ss:Column ss:Width="70" />
+            <ss:Column ss:Width="70" />
+            <ss:Column ss:Width="70" />
+            <ss:Column ss:Width="70" />
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">Currency</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">Launch date</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">Morningstar</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">EUSD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">Asset Class</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">ISIN</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">EUR</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">15/02/18</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BYVZV757</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">EUR</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">25/04/19</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BJK9HD13</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">GBP</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">06/06/18</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BD9MMC32</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">03/04/19</Data>
+                </Cell>
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">O</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">Equity</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BJK9H753</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">03/04/19</Data>
+                </Cell>
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">O</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">Equity</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BJK9H860</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">MXN</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">19/11/19</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BJK3WG17</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">09/07/19</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BJK3WF00</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">06/06/18</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BD9MMD49</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">GBP</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">16/05/19</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BK6Q9938</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">25/04/19</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BJK9HH50</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">EUR</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">07/09/18</Data>
+                </Cell>
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">O</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">Alternative</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BDDRF148</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">GBP</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">07/09/18</Data>
+                </Cell>
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">O</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">Alternative</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BDDRF254</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">08/11/17</Data>
+                </Cell>
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">O</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">Alternative</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BF4G7308</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">EUR</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">06/12/18</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BF59RW70</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">EUR</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">06/12/18</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BF59RX87</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">EUR</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">06/06/18</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BD9MMF62</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">EUR</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">10/10/18</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Equity</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BF4G7183</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">GBP</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">03/04/19</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BG47J908</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">GBP</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">06/06/18</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BD9MMG79</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">06/12/18</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Equity</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BF4G6Z54</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">09/07/19</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Equity</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BJRCLL96</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">10/10/18</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Equity</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BF4G6Y48</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">EUR</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">07/09/18</Data>
+                </Cell>
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">O</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">Alternative</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BF2SYS28</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">GBP</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">07/09/18</Data>
+                </Cell>
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">O</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">Alternative</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BF2SYT35</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">08/11/17</Data>
+                </Cell>
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">O</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">Alternative</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BF4G7290</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">09/07/19</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Equity</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BJRCLK89</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">10/10/18</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Equity</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BF4G7076</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">16/12/19</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Equity</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BJ06C044</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">06/12/18</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BF59RV63</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">EUR</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">10/10/18</Data>
+                </Cell>
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">O</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BDDRDY39</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">GBP</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">03/12/19</Data>
+                </Cell>
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">O</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BJLTWS02</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">03/12/19</Data>
+                </Cell>
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">O</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BJ06C937</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">15/02/18</Data>
+                </Cell>
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">O</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BDFC6G93</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">03/04/19</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BG8BCY43</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell>
+                    <Data ss:Type="String">USD</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">15/02/18</Data>
+                </Cell>
+                <Cell />
+                <Cell />
+                <Cell>
+                    <Data ss:Type="String">Fixed Income</Data>
+                </Cell>
+                <Cell>
+                    <Data ss:Type="String">IE00BDFC6Q91</Data>
+                </Cell>
+            </Row>
+        </Table>
+        <x:WorksheetOptions>
+            <PageSetup>
+                <Header x:Margin="0.4921259845" />
+                <Footer x:Margin="0.4921259845" />
+                <PageMargins x:Bottom="0.984251969" x:Left="0.78740157499999996" x:Right="0.78740157499999996" x:Top="0.984251969" />
+            </PageSetup>
+            <Selected />
+            <Panes>
+                <Pane>
+                    <Number>1</Number>
+                    <ActiveRow>1</ActiveRow>
+                    <ActiveCol>1</ActiveCol>
+                </Pane>
+            </Panes>
+            <ProtectObjects>False</ProtectObjects>
+            <ProtectScenarios>False</ProtectScenarios>
+        </x:WorksheetOptions>
+    </Worksheet>
+</Workbook>

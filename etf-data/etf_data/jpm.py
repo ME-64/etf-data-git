@@ -14,10 +14,17 @@ import datetime
 import sys
 import os
 import re
-import fx_api # function to get fx rates
+from pathlib import Path
+
+# dealing with main vs import
+if __name__ == '__main__':
+    import fx_api
+    
+else:
+    import etf_data.fx_api as fx_api
 
 
-class Etf_scrape:
+class Jpm:
     """
     Blueprint to define how each issuers website is scraped.
     - Initial scope is to scrape 80% of assets from Issuers websites
@@ -27,7 +34,7 @@ class Etf_scrape:
     - The only manual maitenance should be a list of all issuer websites - but maybe even this can be sourced?
     """
 
-    def __init__(self, debug=True):
+    def __init__(self, debug=True, chr_drvr_path=None):
 
         # Initiate default options for the instance
         chrome_options = Options()
@@ -48,16 +55,21 @@ class Etf_scrape:
 
 
         # Selecting driver based on OS
-        if sys.platform == 'win32':
-            self.browser_path = 'drivers/chromedriver_win.exe'
-        elif sys.platform == 'darwin':
-            self.browser_path = 'drivers/chromedriver_mac'
+        if chr_drvr_path == None:
+            if sys.platform == 'win32':
+                path = Path(__file__).absolute().parent.parent.joinpath('drivers', 'chromedriver_win.exe')
+            elif sys.platform == 'darwin':
+                path = Path(__file__).absolute().parent.parent.joinpath('drivers', 'chromedriver_mac')    
+            self.browser_path = path
+        else:
+            self.browser_path = chr_drvr_path
 
         # Initiating the web driver
         self.driver = webdriver.Chrome(options=chrome_options, executable_path=self.browser_path)
 
         # Used to define the correct cookies for the session
-        with open('web_cookies.txt', 'r') as fp:
+        path = Path(__file__).absolute().parent.parent.joinpath('data', 'jpm_cookies.txt')
+        with open(path, 'r') as fp:
             self.cookies = json.load(fp)
 
         # navigate to start page
@@ -68,35 +80,11 @@ class Etf_scrape:
             self.driver.add_cookie(cooki)
 
         # importing the mappings for each website
-        self.mappings = pd.read_excel('data/datapoint_mapping.xlsx')
+        path = Path(__file__).absolute().parent.parent.joinpath('data', 'datapoint_mapping.xlsx')
+        self.mappings = pd.read_excel(path)
 
 
-    def pBDP(self, isin=None, datapoint=None,FX=None):
-        '''
-        Python Data Point alternative to BDP.
-        Simply a selector for the various BDP implementations of each site
-        '''
-        pass
-
-
-    def update_isins(self, many=True):
-        '''
-        Fetching a current list of ISIN's from all issuers websites
-        Yet to be implemented; many worth collecting all data from these files directly?
-        '''
-        pass
-
-
-    def pBDH(self, isin=None, datapoint=None, start_date=None, end_date=None, FX=None):
-        '''
-        Python Historical Data Point alternative to BDH
-        Designed to behave similarly
-        - Handling an array of ISINs and datapoints (?)
-        '''
-        pass
-
-
-    def jpmBDP(self, isins=None, datapoints=None, fx=None):
+    def BDP(self, isins=None, datapoints=None, fx=None):
         '''
         method returning a single datapoint on a single jpm isin
         Being built out at present to explore exactly how this class should be structured
@@ -169,7 +157,7 @@ class Etf_scrape:
             loaded = []
             while (len(loaded) < 1) & (tries <= 20):
                 try:
-                    loaded = driver.find_elements_by_id(id_ = 'searchbox')
+                    loaded = self.driver.find_elements_by_id(id_ = 'searchbox')
                     time.sleep(0.5)
                     tries = tries + 1
                 except:
@@ -214,17 +202,17 @@ class Etf_scrape:
         #        df[col] = np.nan
         if 'fund_aum_currency' in df.columns: df['fund_aum_currency'] = df['fund_aum_currency'].str.slice(stop = 3)
         if 'fund_aum' in df.columns: df['fund_aum'] = df['fund_aum'].str.slice(start = 4, stop = -3).astype('float64') * 1000000
-        if 'fund_aum_asof' in df.columns: df['fund_aum_asof']  = df['fund_aum_asof'].str.replace('As of ', '').astype('datetime64')
+        if 'fund_aum_asof' in df.columns: df['fund_aum_asof']  = pd.to_datetime(df['fund_aum_asof'].str.replace('As of ', ''), dayfirst=True)
         if 'shareclass_nav_currency' in df.columns: df['shareclass_nav_currency'] = df['shareclass_nav_currency'].str.slice(stop = 3)
         if 'shareclass_nav' in df.columns: df['shareclass_nav'] = df['shareclass_nav'].str.slice(start = 4).astype('float64')
-        if 'shareclass_nav_asof' in df.columns: df['shareclass_nav_asof']  = df['shareclass_nav_asof'].str.replace('As of ', '').astype('datetime64')
+        if 'shareclass_nav_asof' in df.columns: df['shareclass_nav_asof']  = pd.to_datetime(df['shareclass_nav_asof'].str.replace('As of ', ''),dayfirst=True)
         if 'shareclass_inception_date' in df.columns: df['shareclass_inception_date'] = df['shareclass_inception_date'].astype('datetime64')
         if 'fund_number_of_holdings' in df.columns: df['fund_number_of_holdings'] = df['fund_number_of_holdings'].astype('float64')
-        if 'shareclass_shares_outstanding_asof' in df.columns: df['shareclass_shares_outstanding_asof'] = df['shareclass_shares_outstanding_asof'].str.replace('As of ', '').astype('datetime64')
+        if 'shareclass_shares_outstanding_asof' in df.columns: df['shareclass_shares_outstanding_asof'] = pd.to_datetime(df['shareclass_shares_outstanding_asof'].str.replace('As of ', ''),dayfirst=True)
         if 'shareclass_shares_outstanding' in df.columns: df['shareclass_shares_outstanding'] = df['shareclass_shares_outstanding'].str.replace(',','').astype('float64')
         if 'shareclass_total_expense_ratio' in df.columns: df['shareclass_total_expense_ratio'] = df['shareclass_total_expense_ratio'].str.replace('%','').astype('float64') * 100
         if 'yield_to_maturity' in df.columns: df['yield_to_maturity'] = df['yield_to_maturity'].str.replace('%','').astype('float64')
-        if 'yield_to_maturity_asof' in df.columns: df['yield_to_maturity_asof']  = df['yield_to_maturity_asof'].str.replace('As of ', '').astype('datetime64')
+        if 'yield_to_maturity_asof' in df.columns: df['yield_to_maturity_asof']  = pd.to_datetime(df['yield_to_maturity_asof'].str.replace('As of ', ''), dayfirst=True)
         if old_name.lower() == 'all': df['shareclass_assets_base'] = df['shareclass_shares_outstanding'] * df['shareclass_nav']
         df.dropna(axis = 1, how = 'all', inplace=True)
         
@@ -237,7 +225,7 @@ class Etf_scrape:
             date = df['fund_aum_asof'].dropna().unique()
             date = pd.Series(date)
             date.drop_duplicates(inplace=True)
-            date = date.astype(np.datetime64)
+            date = pd.to_datetime(date, dayfirst=True)
             date = np.datetime_as_string(date, unit = 'D')
             
             fx_table = fx_api.get_fx(cur, date, base = fx)
@@ -259,7 +247,7 @@ class Etf_scrape:
             date = df['shareclass_nav_asof'].dropna().unique()
             date = pd.Series(date)
             date.drop_duplicates(inplace=True)
-            date = date.astype(np.datetime64)
+            date = pd.to_datetime(date, dayfirst=True)
             date = np.datetime_as_string(date, unit = 'D')
             
             fx_table = fx_api.get_fx(cur, date, base = fx)
@@ -279,7 +267,7 @@ class Etf_scrape:
 
 
 
-    def jpmPORT(self, isins=None):
+    def PORT(self, isins=None):
         #ie00bf4g6y48
         # enable vectorisation
         if isinstance(isins,str):
@@ -309,7 +297,7 @@ class Etf_scrape:
         return df
 
 
-    def get_jpmISIN(self):
+    def ISIN(self):
         """
         method to update the list of currently available isins for JPMETFs
         """
@@ -357,10 +345,11 @@ class Etf_scrape:
 
 ## testing
 if __name__ == '__main__':
-    etf = Etf_scrape(debug=False)
+    jpm = Jpm(debug=False)
     #df = etf.jpmBDP(isins= ['IE00BD9MMF62','IE00BJK9H753'], datapoints= ['fund_aum', 'yield_to_maturity', 'isin'])
     #df = etf.jpmBDP(isins= ['IE00BD9MMF62','IE00BJK9H753'], datapoints= 'all')
     #print(df.shape)
-
-    df = etf.jpmBDP(isins='IE00BD9MMF62', datapoints = 'shareclass_dist_status')
+    isins = 'IE00BD9MMF62'
+    datapoints = ['shareclass_nav', 'shareclass_nav_currency', 'shareclass_nav_asof']
+    df = jpm.BDP(isins= isins, datapoints = datapoints, fx = 'USD')
     print(df)

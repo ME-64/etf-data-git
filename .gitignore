@@ -127,7 +127,16 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-drivers/
+
+#other
+chrome_win.exe
+chrome_mace
 data/Export.xml
 data/Export.xlm
 data/Export.xls
+
+*/acess_key.txt
+acess_key.txt
+*.ipynb
+/**/access_key.txt
+/**/drivers/

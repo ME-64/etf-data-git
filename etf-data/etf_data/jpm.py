@@ -301,11 +301,13 @@ class Jpm:
         """
         method to update the list of currently available isins for JPMETFs
         """
-        path1 = os.path.join('data','Export.xls')
+
+        path1 = Path(__file__).absolute().parent.parent.joinpath('data', 'Export.xls')
         if 'Export.xls' in os.listdir('data'):
             os.remove(path1)
 
-        path2 = os.path.join('data','Export.xlm')
+
+        path2 = Path(__file__).absolute().parent.parent.joinpath('data', 'Export.xlm')
         if 'Export.xlm' in os.listdir('data'):
             os.remove(path2)
 

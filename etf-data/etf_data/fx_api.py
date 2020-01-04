@@ -34,8 +34,7 @@ def get_fx(quoted, dates, base='USD', main_api ='http://data.fixer.io/api/', key
         key = f.read()
         
     except FileNotFoundError as err:
-        print(Path(__file__).absolute())
-        raise FileNotFoundError('Please sign-up for fixer.io and create file w/APIkey in "data/access_key.txt"') from err
+        raise FileNotFoundError('Please sign-up for fixer.io and create file with your API key in "data/access_key.txt"') from err
     except Exception:
         raise
     else:

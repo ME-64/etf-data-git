@@ -130,7 +130,7 @@ dmypy.json
 
 #other
 chrome_win.exe
-chrome_mac
+chrome_mace
 data/Export.xml
 data/Export.xlm
 data/Export.xls

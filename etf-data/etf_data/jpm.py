@@ -27,7 +27,7 @@ class Etf_scrape:
     - The only manual maitenance should be a list of all issuer websites - but maybe even this can be sourced?
     """
 
-    def __init__(self, debug=True):
+    def __init__(self, debug=True, chr_drvr_path=None):
 
         # Initiate default options for the instance
         chrome_options = Options()
@@ -48,10 +48,13 @@ class Etf_scrape:
 
 
         # Selecting driver based on OS
-        if sys.platform == 'win32':
-            self.browser_path = 'drivers/chromedriver_win.exe'
-        elif sys.platform == 'darwin':
-            self.browser_path = 'drivers/chromedriver_mac'
+        if chr_drvr_path == None:
+            if sys.platform == 'win32':
+                self.browser_path = 'drivers/chromedriver_win.exe'
+            elif sys.platform == 'darwin':
+                self.browser_path = 'drivers/chromedriver_mac'
+        else:
+            self.browser_path = chr_drvr_path
 
         # Initiating the web driver
         self.driver = webdriver.Chrome(options=chrome_options, executable_path=self.browser_path)

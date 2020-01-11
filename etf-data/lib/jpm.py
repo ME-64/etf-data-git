@@ -141,10 +141,7 @@ class Jpm:
 
         # fetching the JPM website
         self.driver.get(website)
-
-
-
-        wait = WebDriverWait(self.driver, 2)
+        time.sleep(2)
 
         # loop through all requested ISINs for all requested datapoints
         for isin in isins:
@@ -162,7 +159,6 @@ class Jpm:
                     tries = tries + 1
                 except:
                     tries = tries + 1
-
 
             for datapoint in datapoints:
                 if datapoint == 'title':
@@ -183,7 +179,7 @@ class Jpm:
                         dp = soup.get_text()
                         df.loc[max(df.index) + 1] = [isin, datapoint, dp]
                     except:
-                        # add a not found row if not found
+                         # add a not found row if not found
                         df.loc[max(df.index) + 1] = [isin, datapoint, 'not found']
             time.sleep(0.5)
 
@@ -196,28 +192,38 @@ class Jpm:
         df.rename(columns = {'Datapoint':'DATAPOINT'}, inplace=True)
         df = df.drop_duplicates()
         df = df.pivot(index = 'ISIN', columns = 'DATAPOINT',values = 'VALUE')
-        df.replace('not found', np.nan, inplace=True)
-        #for col in column_list:
-        #    if col not in df.columns:
-        #        df[col] = np.nan
-        if 'fund_aum_currency' in df.columns: df['fund_aum_currency'] = df['fund_aum_currency'].str.slice(stop = 3)
-        if 'fund_aum' in df.columns: df['fund_aum'] = df['fund_aum'].str.slice(start = 4, stop = -3).astype('float64') * 1000000
-        if 'fund_aum_asof' in df.columns: df['fund_aum_asof']  = pd.to_datetime(df['fund_aum_asof'].str.replace('As of ', ''), dayfirst=True)
-        if 'shareclass_nav_currency' in df.columns: df['shareclass_nav_currency'] = df['shareclass_nav_currency'].str.slice(stop = 3)
-        if 'shareclass_nav' in df.columns: df['shareclass_nav'] = df['shareclass_nav'].str.slice(start = 4).astype('float64')
-        if 'shareclass_nav_asof' in df.columns: df['shareclass_nav_asof']  = pd.to_datetime(df['shareclass_nav_asof'].str.replace('As of ', ''),dayfirst=True)
-        if 'shareclass_inception_date' in df.columns: df['shareclass_inception_date'] = df['shareclass_inception_date'].astype('datetime64')
-        if 'fund_number_of_holdings' in df.columns: df['fund_number_of_holdings'] = df['fund_number_of_holdings'].astype('float64')
-        if 'shareclass_shares_outstanding_asof' in df.columns: df['shareclass_shares_outstanding_asof'] = pd.to_datetime(df['shareclass_shares_outstanding_asof'].str.replace('As of ', ''),dayfirst=True)
-        if 'shareclass_shares_outstanding' in df.columns: df['shareclass_shares_outstanding'] = df['shareclass_shares_outstanding'].str.replace(',','').astype('float64')
-        if 'shareclass_total_expense_ratio' in df.columns: df['shareclass_total_expense_ratio'] = df['shareclass_total_expense_ratio'].str.replace('%','').astype('float64') * 100
-        if 'yield_to_maturity' in df.columns: df['yield_to_maturity'] = df['yield_to_maturity'].str.replace('%','').astype('float64')
-        if 'yield_to_maturity_asof' in df.columns: df['yield_to_maturity_asof']  = pd.to_datetime(df['yield_to_maturity_asof'].str.replace('As of ', ''), dayfirst=True)
-        if old_name.lower() == 'all': df['shareclass_assets_base'] = df['shareclass_shares_outstanding'] * df['shareclass_nav']
+        #df.replace('not found', np.nan, inplace=True)
+        if 'fund_aum_currency' in df.columns:
+            df['fund_aum_currency'] = df['fund_aum_currency'].str.slice(stop = 3)
+        if 'fund_aum' in df.columns:
+            df['fund_aum'] = df['fund_aum'].str.slice(start = 4, stop = -3).astype('float64') * 1000000
+        if 'fund_aum_asof' in df.columns:
+            df['fund_aum_asof']  = pd.to_datetime(df['fund_aum_asof'].str.replace('As of ', ''), dayfirst=True)
+        if 'shareclass_nav_currency' in df.columns:
+            df['shareclass_nav_currency'] = df['shareclass_nav_currency'].str.slice(stop = 3)
+        if 'shareclass_nav' in df.columns:
+            df['shareclass_nav'] = df['shareclass_nav'].str.slice(start = 4).astype('float64')
+        if 'shareclass_nav_asof' in df.columns:
+            df['shareclass_nav_asof']  = pd.to_datetime(df['shareclass_nav_asof'].str.replace('As of ', ''),dayfirst=True)
+        if 'shareclass_inception_date' in df.columns:
+            df['shareclass_inception_date'] = df['shareclass_inception_date'].astype('datetime64')
+        if 'fund_number_of_holdings' in df.columns:
+            df['fund_number_of_holdings'] = df['fund_number_of_holdings'].astype('float64')
+        if 'shareclass_shares_outstanding_asof' in df.columns:
+            df['shareclass_shares_outstanding_asof'] = pd.to_datetime(df['shareclass_shares_outstanding_asof'].str.replace('As of ', ''),dayfirst=True)
+        if 'shareclass_shares_outstanding' in df.columns:
+            df['shareclass_shares_outstanding'] = df['shareclass_shares_outstanding'].str.replace(',','').astype('float64')
+        if 'shareclass_total_expense_ratio' in df.columns:
+            df['shareclass_total_expense_ratio'] = df['shareclass_total_expense_ratio'].str.replace('%','').astype('float64') * 100
+        if 'yield_to_maturity' in df.columns:
+            df['yield_to_maturity'] = df['yield_to_maturity'].str.replace('%','').astype('float64')
+        if 'yield_to_maturity_asof' in df.columns:
+            df['yield_to_maturity_asof']  = pd.to_datetime(df['yield_to_maturity_asof'].str.replace('As of ', ''), dayfirst=True)
+        if old_name.lower() == 'all':
+            df['shareclass_assets_base'] = df['shareclass_shares_outstanding'] * df['shareclass_nav']
         df.dropna(axis = 1, how = 'all', inplace=True)
         
         if (fx_enable == True) & (('fund_aum' in df.columns) == True):
-            
             cur = df['fund_aum_currency'].dropna().unique()
             cur = pd.Series(cur)
             cur = cur.to_list()
@@ -301,11 +307,13 @@ class Jpm:
         """
         method to update the list of currently available isins for JPMETFs
         """
-        path1 = os.path.join('data','Export.xls')
+
+        path1 = Path(__file__).absolute().parent.parent.joinpath('data', 'Export.xls')
         if 'Export.xls' in os.listdir('data'):
             os.remove(path1)
 
-        path2 = os.path.join('data','Export.xlm')
+
+        path2 = Path(__file__).absolute().parent.parent.joinpath('data', 'Export.xlm')
         if 'Export.xlm' in os.listdir('data'):
             os.remove(path2)
 
@@ -345,11 +353,12 @@ class Jpm:
 
 ## testing
 if __name__ == '__main__':
-    jpm = Jpm(debug=False)
+    jpm = Jpm(debug=True)
     #df = etf.jpmBDP(isins= ['IE00BD9MMF62','IE00BJK9H753'], datapoints= ['fund_aum', 'yield_to_maturity', 'isin'])
     #df = etf.jpmBDP(isins= ['IE00BD9MMF62','IE00BJK9H753'], datapoints= 'all')
     #print(df.shape)
     isins = 'IE00BD9MMF62'
-    datapoints = ['shareclass_nav', 'shareclass_nav_currency', 'shareclass_nav_asof']
-    df = jpm.BDP(isins= isins, datapoints = datapoints, fx = 'USD')
+    #datapoints = ['shareclass_nav', 'shareclass_nav_currency', 'shareclass_nav_asof']
+    datapoints = ['shareclass_ticker_bbg']
+    df = jpm.BDP(isins= isins, datapoints = datapoints)
     print(df)

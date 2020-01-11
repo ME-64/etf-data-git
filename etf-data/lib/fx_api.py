@@ -6,8 +6,7 @@ from pathlib import Path
 
 def get_fx(quoted, dates, base='USD', main_api ='http://data.fixer.io/api/', key=None):
 
-    '''
-    Returns historical FX rates from the fixer.io api for given currencies on a specified date
+    ''' Returns historical FX rates from the fixer.io api for currency(s) & date
 
     Parameters
     ----------
@@ -29,15 +28,18 @@ def get_fx(quoted, dates, base='USD', main_api ='http://data.fixer.io/api/', key
     '''
     try:
         # Read in API access key when script or import
-        path = Path(__file__).absolute().parent.parent.joinpath('data', 'access_key.txt')
+        path = Path(__file__).absolute().parent.parent.joinpath(
+                'data', 'access_key.txt')
         f = open(path)
         key = f.read()
         
     except FileNotFoundError as err:
-        raise FileNotFoundError('Please sign-up for fixer.io and create file with your API key in "data/access_key.txt"') from err
+        raise FileNotFoundError(
+               '''Please sign-up for fixer.io and create file with your API key
+               in "data/access_key.txt"''') from err
     except Exception:
         raise
-    else:
+    finally:
         f.close()
 
 
@@ -49,7 +51,7 @@ def get_fx(quoted, dates, base='USD', main_api ='http://data.fixer.io/api/', key
         dates = [dates]
 
     if base not in quoted:
-        # ensure base currency is included in fetch, important to get around free api restriction
+        # include base in query to circumvent EUR only base limit of the free API
         quoted.append(base)
 
     quoted = ','.join(quoted) # convert to comma seperated values for api parameter
@@ -76,7 +78,9 @@ def get_fx(quoted, dates, base='USD', main_api ='http://data.fixer.io/api/', key
             new_rates[k] = v * r_base
 
         # converting each dictionary to a dataframe and appending
-        date_df = pd.DataFrame({'currency': list(new_rates.keys()), 'rate': list(new_rates.values()), 'date': date})
+        date_df = pd.DataFrame({'currency': list(new_rates.keys()),
+            'rate': list(new_rates.values()), 'date': date})
+
         new_rates_df = new_rates_df.append(date_df)
         new_rates_df['date'] = new_rates_df['date'].astype(pd.np.datetime64)
 
